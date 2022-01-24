@@ -73,7 +73,23 @@ public class Employee {
         this.id = id;
     }
 
-    public Employee(String name, String birthDay, String gender,
+    public Employee(int id , String name, String birthDay, String gender,
+                    String graduationDate, String department, String team ,double grossSalary, double netSalary, String isManager, Employee manager_id , List<Employee> list) {
+        this.id = id;
+        this.name = name;
+        this.birthDay = birthDay;
+        this.gender = gender;
+        this.graduationDate = graduationDate;
+        this.department = department;
+        this.team = team;
+        this.grossSalary = grossSalary;
+        this.netSalary = netSalary;
+        this.isManager = isManager;
+        this.manager = manager_id;
+        this.managedEmps = list;
+    }
+
+    public Employee( String name, String birthDay, String gender,
                     String graduationDate, String department, String team ,double grossSalary, double netSalary, String isManager, Employee manager_id , List<Employee> list) {
         this.name = name;
         this.birthDay = birthDay;

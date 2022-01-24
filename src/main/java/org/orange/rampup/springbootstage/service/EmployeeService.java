@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +20,7 @@ public class EmployeeService {
     }
 
     public List<Employee> saveEmployees(List<Employee> employees){
+
         return employeeRepository.saveAll(employees);
     }
 
@@ -40,9 +42,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee){
-
         return employee;
-
     }
 
 
