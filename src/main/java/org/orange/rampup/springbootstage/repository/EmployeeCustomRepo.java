@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface EmployeeCustomRepo {
 
-    String checkaya(int id);
+    String customDeleteEmployee(int id);
 }

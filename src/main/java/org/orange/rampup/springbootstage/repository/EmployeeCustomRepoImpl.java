@@ -24,7 +24,7 @@ public class EmployeeCustomRepoImpl implements EmployeeCustomRepo {
     @PersistenceContext
     EntityManager entityManager;
 
-    public String checkaya(int id) {
+    public String customDeleteEmployee(int id) {
 
         String managerOrNot = employeeRepository.checkIfManager(id);
         Employee employee = employeeRepository.findEmp(id);

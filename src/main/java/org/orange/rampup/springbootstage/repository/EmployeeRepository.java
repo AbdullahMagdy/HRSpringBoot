@@ -25,20 +25,6 @@ public interface EmployeeRepository extends JpaRepository<Employee,Integer> , Em
     @Query("select e from Employee e where e.id = ?1")
     public Employee findEmp(int id);
 
-    @Query(value = "\n" +
-            "WITH recursive ancestors AS (\n" +
-            "           SELECT cat.id, cat.manager_id, 1 AS lvl \n" +
-            "           FROM employees as cat \n" +
-            "             WHERE cat.manager_id = :managerId \n" +
-            "            UNION ALL \n" +
-            "            SELECT parent.id, parent.manager_id, child.lvl + 1 AS lvl \n" +
-            "            FROM employees parent \n" +
-            "             inner join ancestors as child \n" +
-            "            ON parent.manager_id = child.id\n" +
-            "          )\n" +
-            "SELECT * from ancestors ORDER BY lvl" , nativeQuery = true)
-    List<String> findAncestry(@Param("managerId") int categoryId);
-
 
     @Query(value = "\n" +
             "WITH recursive ancestors AS (\n" +
@@ -53,8 +39,6 @@ public interface EmployeeRepository extends JpaRepository<Employee,Integer> , Em
             "          )\n" +
             "SELECT * from ancestors ORDER BY lvl" , nativeQuery = true)
     List<String> findAncestry2(@Param("managerId") int categoryId);
-
-
 
 
 }
