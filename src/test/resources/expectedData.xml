@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+
+    <employees name = 'Ali' birth_day = '10/1/2010' gender = 'male' graduation_date = '10/10/2020' department = 'IS'
+               team = 'A' gross_salary = '12000' net_salary = '10000'
+               is_manager = 'YES' manager_id = 'null' />
+
+    <employees name = 'Ahmed' birth_day = '10/1/2010' gender = 'male' graduation_date = '10/10/2020' department = 'IS'
+               team = 'A' gross_salary = '12000' net_salary = '10000'
+               is_manager = 'YES' manager_id = 'null' />
+
+</dataset>
