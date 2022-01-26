@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "org.orange.rampup.springbootstage")
-@PropertySource("application.properties")
+@PropertySource("application-testing.properties")
 @EnableTransactionManagement
 public class ConfClass {
 

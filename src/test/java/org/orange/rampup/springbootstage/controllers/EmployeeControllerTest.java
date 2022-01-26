@@ -9,11 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.orange.rampup.springbootstage.ConfClass;
 import org.orange.rampup.springbootstage.entity.Employee;
 import org.orange.rampup.springbootstage.repository.EmployeeRepository;
 import org.orange.rampup.springbootstage.service.EmployeeService;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,10 +26,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.*;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -39,6 +43,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,52 +52,55 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(JUnit4ClassRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class EmployeeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @SqlGroup({
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD , scripts = "/test.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD , statements = "delete from employees")
+    })
     public void shouldRetrieveEmployeeWithId() throws Exception {
-        this.mockMvc.perform(get("/employees/1")).andDo(print()).andExpect(jsonPath("$.id", is(1))).
-                andExpect(jsonPath("$.name", is("Fatma"))).
-                andExpect(jsonPath("$.gender", is("female")));
+        this.mockMvc.perform(get("/employees/1")).andDo(print())
+                .andExpect(jsonPath("$.id", is(1))).
+                andExpect(jsonPath("$.name", is("Ammar"))).
+                andExpect(jsonPath("$.gender", is("male")));
     }
 
     @Test
-    /*@SqlGroup({
+    @SqlGroup({
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD , scripts = "/test.sql"),
-            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD )
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD , statements = "delete from employees")
     })
-     */
     public void shouldRetrieveAllEmployees() throws Exception {
-        this.mockMvc.perform(get("/employees")).andDo(print()).andExpect(
-                jsonPath("$").isArray()).andExpect(jsonPath("$.[0].id", is(1))).
-                andExpect(jsonPath("$.[0].name", is("Fatma"))).
-                andExpect(jsonPath("$.[0].gender", is("female")));
+        this.mockMvc.perform(get("/employees").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(
+                        jsonPath("$").isArray()).andExpect(jsonPath("$.[0].id", is(1))).
+                andExpect(jsonPath("$.[0].name", is("Ammar"))).
+                andExpect(jsonPath("$.[0].gender", is("male")));
     }
 
     @Test
     public void shouldAddEmployee() throws Exception {
         String newEmployee = "{\"name\":\"Adama\",\"birthDay\":\"11/11/1998\",\"gender\":\"male\",\"graduationDate\":\"10/5/2020\",\"department\":\"IS\",\"team\":\"AB\",\"grossSalary\":12000.0,\"netSalary\":10000.0,\"isManager\":\"NO\",\"managedEmps\":[]}";
         this.mockMvc.perform(post("/employee").content(newEmployee).contentType(MediaType.APPLICATION_JSON)).andDo(print())
-                .andExpect(jsonPath("$.id", is(greaterThan(0)))).
+                .andExpect(jsonPath("$.id", is(1))).
                 andExpect(jsonPath("$.name", is("Adama"))).
                 andExpect(jsonPath("$.gender", is("male")));
     }
 
     @Test
+    @SqlGroup({
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD , scripts = "/test.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD , statements = "delete from employees")
+    })
     public void shouldDeleteEmployeeWithId() throws Exception {
-
-        String returnMessage  = this.mockMvc.perform(get("/employees/11/remove")).andDo(print()).andReturn().getResponse().getContentAsString();
+        String returnMessage  = this.mockMvc.perform(get("/employees/1/remove")).andDo(print()).andReturn().getResponse().getContentAsString();
         assertEquals("Succefully Deleted" , returnMessage);
-
     }
-
-
-
 
 }
