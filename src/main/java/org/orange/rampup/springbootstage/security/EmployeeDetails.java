@@ -1,21 +1,17 @@
 package org.orange.rampup.springbootstage.security;
 
 import org.orange.rampup.springbootstage.entity.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 
-public class MyUserDetails implements UserDetails {
+public class EmployeeDetails implements UserDetails {
 
 
     Employee employee;
 
-    public MyUserDetails(Employee employee){
+    public EmployeeDetails(Employee employee){
         this.employee = employee;
     }
 
