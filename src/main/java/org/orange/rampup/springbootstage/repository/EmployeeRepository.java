@@ -10,9 +10,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Primary
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> , EmployeeCustomRepo {
+
+    public Employee findByName(String name);
 
     public List<Employee> findByTeam(String team);
 
