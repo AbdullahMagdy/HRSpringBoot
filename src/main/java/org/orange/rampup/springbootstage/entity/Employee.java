@@ -7,6 +7,8 @@ import jdk.jfr.DataAmount;
 import javax.persistence.*;
 import java.util.List;
 
+//import lombok.*;
+
 @Entity
 @Table(name = "Employees")
 public class Employee {

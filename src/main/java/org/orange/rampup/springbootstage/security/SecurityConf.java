@@ -24,8 +24,12 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().anyRequest()
-                .authenticated().and().httpBasic();
+        //http.authorizeRequests().anyRequest().authenticated().and().httpBasic();
+
+        http.authorizeRequests().antMatchers("/employees/**").hasRole("USER")
+                .and().httpBasic();
+        http.authorizeRequests().antMatchers("/employees/{employeeId}")
+                .hasAnyRole("USER","ADMIN").and().httpBasic();
 
     }
 
