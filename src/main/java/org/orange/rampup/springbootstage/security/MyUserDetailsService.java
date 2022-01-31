@@ -27,7 +27,8 @@ public class MyUserDetailsService implements UserDetailsService {
         if (employee == null) {
             throw new UsernameNotFoundException(name);
         }
-        return new MyUserDetails(employee);
+        MyUserDetails myUserDetails = new MyUserDetails(employee);
+        return myUserDetails;
     }
 
     private Collection<GrantedAuthority> getGrantedAuthority(Employee employee){

@@ -17,13 +17,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 @EnableWebSecurity
 public class SecurityConf extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    MyUserDetailsService myUserDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("ALI").
-                password(passwordEncoder().encode("ali123")).roles("ADMIN").and()
-                .withUser("Ahmed").password(passwordEncoder().encode("ahmed123"))
-                .roles("USER");
+        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -36,7 +35,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
 
 }
